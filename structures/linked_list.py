@@ -2,10 +2,8 @@ from models.student import Student
 
 
 class LinkedList:
-    """
-    Singly Linked List untuk menyimpan data mahasiswa secara dinamis.
-    Setiap elemen adalah node Student yang terhubung via pointer .next
-    """
+    # Singly Linked List untuk menyimpan data siswa secara dinamis.
+    # Setiap elemen adalah node Student yang terhubung via pointer .next
 
     def __init__(self):
         self.head = None
@@ -13,20 +11,14 @@ class LinkedList:
     # ──────────────────────────────────────────
     # CREATE
     # ──────────────────────────────────────────
-    def tambah(self, nim, nama, nilai):
-        """
-        Menambah node baru di akhir linked list.
-        Menolak jika NIM sudah terdaftar (duplikat).
-
-        Return:
-            True  — berhasil ditambah
-            False — NIM sudah ada
-        """
-        # Cek duplikat NIM
+    def tambah(self, nim, nama, nilai_mapel):
+        # Menambah node baru di akhir linked list.
+        # Menolak jika NIM sudah terdaftar (duplikat).
+        # Return True jika berhasil, False jika NIM sudah ada.
         if self.cari(nim) is not None:
             return False
 
-        new_node = Student(nim, nama, nilai)
+        new_node = Student(nim, nama, nilai_mapel)
 
         if self.head is None:
             self.head = new_node
@@ -42,40 +34,37 @@ class LinkedList:
     # READ
     # ──────────────────────────────────────────
     def tampilkan(self):
-        """ Menampilkan semua data mahasiswa dalam format tabel. """
+        # Menampilkan semua data siswa dalam format tabel per klaster
         if self.head is None:
-            print("  (Belum ada data mahasiswa)")
+            print("  (Belum ada data siswa)")
             return
 
         print()
-        print("  " + "─" * 80)
-        print(f"  {'No':<4} {'NIM':<12} {'Nama':<20} {'Prog':>6} {'Design':>7} {'Analisis':>9} {'Rata²':>7}")
-        print("  " + "─" * 80)
+        print("  " + "─" * 75)
+        print(f"  {'No':<4} {'NIM':<12} {'Nama':<20} {'Sains':>7} {'Sosial':>7} {'Kreatif':>8} {'Rekomendasi':<20}")
+        print("  " + "─" * 75)
 
         current = self.head
         no = 1
         while current:
-            n = current.nilai
+            skor = current.skor_klaster()
+            rek  = current.LABEL_KLASTER[current.rekomendasi()]
             print(
                 f"  {no:<4} {current.nim:<12} {current.nama:<20} "
-                f"{n.get('programming', 0):>6} "
-                f"{n.get('design', 0):>7} "
-                f"{n.get('analisis', 0):>9} "
-                f"{current.rata_rata():>7.1f}"
+                f"{skor['sains']:>7.1f} "
+                f"{skor['sosial']:>7.1f} "
+                f"{skor['kreatif']:>8.1f} "
+                f"{rek:<20}"
             )
             current = current.next
             no += 1
 
-        print("  " + "─" * 80)
-        print(f"  Total: {no - 1} mahasiswa\n")
+        print("  " + "─" * 75)
+        print(f"  Total: {no - 1} siswa\n")
 
     def cari(self, nim):
-        """
-        Mencari node berdasarkan NIM.
-
-        Return:
-            Student node jika ditemukan, None jika tidak.
-        """
+        # Mencari node berdasarkan NIM.
+        # Return Student node jika ditemukan, None jika tidak.
         current = self.head
         while current:
             if current.nim == nim:
@@ -84,12 +73,8 @@ class LinkedList:
         return None
 
     def cari_nama(self, keyword):
-        """
-        Mencari semua mahasiswa yang namanya mengandung keyword (case-insensitive).
-
-        Return:
-            List of Student nodes yang cocok.
-        """
+        # Mencari semua siswa yang namanya mengandung keyword (case-insensitive).
+        # Return list of Student nodes yang cocok.
         hasil = []
         current = self.head
         while current:
@@ -102,14 +87,9 @@ class LinkedList:
     # UPDATE
     # ──────────────────────────────────────────
     def update(self, nim, nama_baru=None, nilai_baru=None):
-        """
-        Memperbarui data mahasiswa berdasarkan NIM.
-        Hanya field yang diisi (tidak None) yang akan diubah.
-
-        Return:
-            True, berhasil diupdate
-            False, NIM tidak ditemukan
-        """
+        # Memperbarui data siswa berdasarkan NIM.
+        # Hanya field yang diisi (tidak None) yang akan diubah.
+        # Return True jika berhasil, False jika NIM tidak ditemukan.
         node = self.cari(nim)
 
         if node is None:
@@ -119,9 +99,9 @@ class LinkedList:
             node.nama = nama_baru
 
         if nilai_baru:
-            # Update hanya klaster yang diberikan, sisanya tetap
-            for klaster, val in nilai_baru.items():
-                node.nilai[klaster] = val
+            # Update hanya mapel yang diberikan, sisanya tetap
+            for mapel, val in nilai_baru.items():
+                node.nilai_mapel[mapel] = val
 
         return True
 
@@ -129,13 +109,9 @@ class LinkedList:
     # DELETE
     # ──────────────────────────────────────────
     def hapus(self, nim):
-        """
-        Menghapus node berdasarkan NIM.
-
-        Return:
-            Student node yang dihapus (untuk keperluan undo di Stack),
-            atau None jika tidak ditemukan.
-        """
+        # Menghapus node berdasarkan NIM.
+        # Return node yang dihapus (untuk keperluan undo di Stack),
+        # atau None jika NIM tidak ditemukan.
         current = self.head
         prev = None
 
@@ -146,25 +122,20 @@ class LinkedList:
                 else:
                     self.head = current.next
 
-                current.next = None  # Putus pointer
-                return current       # Kembalikan node yang dihapus
+                current.next = None
+                return current
 
             prev = current
             current = current.next
 
-        return None  # NIM tidak ditemukan
+        return None
 
     # ──────────────────────────────────────────
     # UTILITY
     # ──────────────────────────────────────────
     def ke_list(self):
-        """
-        Mengubah seluruh linked list menjadi list Python biasa.
-        Dipakai oleh sorting dan file_handler.
-
-        Return:
-            List of Student nodes.
-        """
+        # Mengubah seluruh linked list menjadi list Python biasa.
+        # Dipakai oleh sorting dan file_handler.
         hasil = []
         current = self.head
         while current:
@@ -173,17 +144,14 @@ class LinkedList:
         return hasil
 
     def dari_list(self, list_node):
-        """
-        Membangun ulang linked list dari list Python (hasil sorting).
-        Semua pointer .next akan di-reset dan disambung ulang.
-        """
+        # Membangun ulang linked list dari list Python (hasil sorting).
         self.head = None
         for node in list_node:
             node.next = None
             self.tambah_node(node)
 
     def tambah_node(self, node):
-        """ Menambah node Student yang sudah ada langsung ke linked list. """
+        # Menambah node Student yang sudah ada langsung ke linked list.
         node.next = None
         if self.head is None:
             self.head = node
@@ -194,5 +162,5 @@ class LinkedList:
             current.next = node
 
     def kosong(self):
-        """ Mengecek apakah linked list kosong. """
+        # Mengecek apakah linked list kosong.
         return self.head is None
