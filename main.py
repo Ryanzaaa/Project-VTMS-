@@ -2,6 +2,7 @@ from structures.linked_list import LinkedList
 from structures.stack import Stack
 from services.file_handler import simpan_csv, muat_csv, SEMUA_MAPEL
 from models.student import Student
+from structures.algorithm_engine import binary_search_nim, menu_ranking
 
 ll    = LinkedList()
 stack = Stack()
@@ -76,7 +77,8 @@ def menu():
     print("  4. Update Siswa")
     print("  5. Hapus Siswa")
     print("  6. Undo Aksi Terakhir")
-    print("  7. Keluar")
+    print("  7. Ranking per Klaster")
+    print("  8. Keluar")
     print("=" * 40)
 
 
@@ -121,19 +123,31 @@ while True:
     # ── 3. CARI ──
     elif pilihan == "3":
         print("\n  [ CARI SISWA ]")
-        keyword = input("  Masukkan NIM atau Nama: ").strip()
+        print("    a. Cari by NIM")
+        print("    b. Cari by Nama")
+        sub = input("  Pilih (a/b): ").strip().lower()
 
-        node = ll.cari(keyword)
-        if node:
-            tampil_detail(node)
-        else:
+        if sub == "a":
+            nim = input("  Masukkan NIM: ").strip()
+            print("  Mencari dengan Binary Search...")
+            node = binary_search_nim(ll, nim)
+            if node:
+                tampil_detail(node)
+            else:
+                print(f"  [!] NIM '{nim}' tidak ditemukan.")
+
+        elif sub == "b":
+            keyword = input("  Masukkan Nama: ").strip()
             hasil = ll.cari_nama(keyword)
             if hasil:
                 print(f"\n  Ditemukan {len(hasil)} siswa:\n")
                 for h in hasil:
                     tampil_detail(h)
             else:
-                print(f"  [!] Tidak ada siswa dengan NIM/Nama '{keyword}'")
+                print(f"  [!] Tidak ada siswa dengan nama '{keyword}'")
+
+        else:
+            print("  [!] Pilihan tidak valid.")
 
     # ── 4. UPDATE ──
     elif pilihan == "4":
@@ -231,8 +245,12 @@ while True:
             simpan_csv(ll)
             print(f"\n  [✓] Undo update: Data NIM {nim} dikembalikan.")
 
-    # ── 7. KELUAR ──
+    # ── 7. RANKING ──
     elif pilihan == "7":
+        menu_ranking(ll)
+
+    # ── 8. KELUAR ──
+    elif pilihan == "8":
         print("\n  Sampai jumpa!\n")
         break
 
