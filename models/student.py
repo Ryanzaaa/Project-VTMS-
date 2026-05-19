@@ -12,12 +12,12 @@ class Student:
         "kreatif": "Kreatif & Bahasa",
     }
 
-    def __init__(self, nim, nama, nilai_mapel):
-        # nim         : NIM siswa (unik)
+    def __init__(self, nis, nama, nilai_mapel):
+        # nis         : NIS siswa (unik)
         # nama        : Nama siswa
         # nilai_mapel : dict berisi nilai 12 mata pelajaran
         # next        : pointer ke node berikutnya
-        self.nim         = nim
+        self.nis         = nis
         self.nama        = nama
         self.nilai_mapel = nilai_mapel
         self.next        = None
@@ -40,7 +40,7 @@ class Student:
         rek   = self.rekomendasi()
         label = self.LABEL_KLASTER[rek]
         return (
-            f"NIM: {self.nim} | Nama: {self.nama} | "
+            f"NIS: {self.nis} | Nama: {self.nama} | "
             f"Sains: {skor['sains']:.1f} | "
             f"Sosial: {skor['sosial']:.1f} | "
             f"Kreatif: {skor['kreatif']:.1f} | "
