@@ -2,7 +2,7 @@ from structures.linked_list import LinkedList
 from structures.stack import Stack
 from services.file_handler import simpan_csv, muat_csv, SEMUA_MAPEL
 from models.student import Student
-from structures.algorithm_engine import binary_search_nim, menu_ranking
+from structures.algorithm_engine import binary_search_nis, menu_ranking
 
 ll    = LinkedList()
 stack = Stack()
@@ -29,6 +29,17 @@ LABEL_MAPEL = {
     "prakarya"   : "Prakarya",
 }
 
+def input_nis():
+    # Minta input NIS, validasi harus angka integer
+    while True:
+        raw = input("  NIS  : ").strip()
+        if not raw:
+            print("  [!] NIS tidak boleh kosong!")
+        elif not raw.isdigit():
+            print("  [!] NIS harus berupa angka!")
+        else:
+            return raw
+
 def input_nilai_mapel():
     # Minta input nilai semua mapel satu per satu
     nilai = {}
@@ -51,7 +62,7 @@ def tampil_detail(node):
     skor  = node.skor_klaster()
     rek   = node.LABEL_KLASTER[node.rekomendasi()]
     print()
-    print(f"  NIM  : {node.nim}")
+    print(f"  NIS  : {node.nis}")
     print(f"  Nama : {node.nama}")
     print()
     print(f"  {'─'*35}")
@@ -94,24 +105,24 @@ while True:
     # ── 1. TAMBAH ──
     if pilihan == "1":
         print("\n  [ TAMBAH SISWA ]")
-        nim  = input("  NIM  : ").strip()
+        nis  = input_nis()
         nama = input("  Nama : ").strip()
 
-        if not nim or not nama:
-            print("  [!] NIM dan Nama tidak boleh kosong!")
+        if not nis or not nama:
+            print("  [!] NIS dan Nama tidak boleh kosong!")
             continue
 
         nilai_mapel = input_nilai_mapel()
 
-        berhasil = ll.tambah(nim, nama, nilai_mapel)
+        berhasil = ll.tambah(nis, nama, nilai_mapel)
         if not berhasil:
-            print(f"  [!] NIM {nim} sudah terdaftar!")
+            print(f"  [!] NIS {nis} sudah terdaftar!")
         else:
-            stack.push(("tambah", nim))
+            stack.push(("tambah", nis))
             simpan_csv(ll)
             print(f"  [✓] Siswa {nama} berhasil ditambahkan!")
             # Langsung tampilkan rekomendasinya
-            node = ll.cari(nim)
+            node = ll.cari(nis)
             rek  = node.LABEL_KLASTER[node.rekomendasi()]
             print(f"  ★ Rekomendasi klaster: {rek}")
 
@@ -123,18 +134,25 @@ while True:
     # ── 3. CARI ──
     elif pilihan == "3":
         print("\n  [ CARI SISWA ]")
-        print("    a. Cari by NIM")
+        print("    a. Cari by NIS")
         print("    b. Cari by Nama")
         sub = input("  Pilih (a/b): ").strip().lower()
 
         if sub == "a":
-            nim = input("  Masukkan NIM: ").strip()
+            while True:
+                nis = input("  Masukkan NIS: ").strip()
+                if not nis:
+                    print("  [!] NIS tidak boleh kosong!")
+                elif not nis.isdigit():
+                    print("  [!] NIS harus berupa angka!")
+                else:
+                    break
             print("  Mencari dengan Binary Search...")
-            node = binary_search_nim(ll, nim)
+            node = binary_search_nis(ll, nis)
             if node:
                 tampil_detail(node)
             else:
-                print(f"  [!] NIM '{nim}' tidak ditemukan.")
+                print(f"  [!] NIS '{nis}' tidak ditemukan.")
 
         elif sub == "b":
             keyword = input("  Masukkan Nama: ").strip()
@@ -152,11 +170,18 @@ while True:
     # ── 4. UPDATE ──
     elif pilihan == "4":
         print("\n  [ UPDATE SISWA ]")
-        nim = input("  Masukkan NIM yang ingin diupdate: ").strip()
+        while True:
+            nis = input("  Masukkan NIS yang ingin diupdate: ").strip()
+            if not nis:
+                print("  [!] NIS tidak boleh kosong!")
+            elif not nis.isdigit():
+                print("  [!] NIS harus berupa angka!")
+            else:
+                break
 
-        node = ll.cari(nim)
+        node = ll.cari(nis)
         if not node:
-            print(f"  [!] NIM {nim} tidak ditemukan!")
+            print(f"  [!] NIS {nis} tidak ditemukan!")
             continue
 
         tampil_detail(node)
@@ -185,33 +210,40 @@ while True:
         data_lama = {"nama": node.nama, "nilai_mapel": dict(node.nilai_mapel)}
 
         ll.update(
-            nim,
+            nis,
             nama_baru=nama_baru if nama_baru else None,
             nilai_baru=nilai_baru if nilai_baru else None
         )
 
-        stack.push(("update", nim, data_lama))
+        stack.push(("update", nis, data_lama))
         simpan_csv(ll)
-        print(f"  [✓] Data siswa {nim} berhasil diupdate!")
+        print(f"  [✓] Data siswa {nis} berhasil diupdate!")
 
     # ── 5. HAPUS ──
     elif pilihan == "5":
         print("\n  [ HAPUS SISWA ]")
-        nim = input("  Masukkan NIM yang ingin dihapus: ").strip()
+        while True:
+            nis = input("  Masukkan NIS yang ingin dihapus: ").strip()
+            if not nis:
+                print("  [!] NIS tidak boleh kosong!")
+            elif not nis.isdigit():
+                print("  [!] NIS harus berupa angka!")
+            else:
+                break
 
-        node = ll.cari(nim)
+        node = ll.cari(nis)
         if not node:
-            print(f"  [!] NIM {nim} tidak ditemukan!")
+            print(f"  [!] NIS {nis} tidak ditemukan!")
             continue
 
-        print(f"\n  Akan menghapus: {node.nama} ({node.nim})")
+        print(f"\n  Akan menghapus: {node.nama} ({node.nis})")
         konfirmasi = input("  Yakin? (y/n): ").strip().lower()
 
         if konfirmasi != "y":
             print("  Penghapusan dibatalkan.")
             continue
 
-        deleted = ll.hapus(nim)
+        deleted = ll.hapus(nis)
         stack.push(("hapus", deleted))
         simpan_csv(ll)
         print(f"  [✓] Siswa {deleted.nama} berhasil dihapus!")
@@ -227,10 +259,10 @@ while True:
         tipe = aksi[0]
 
         if tipe == "tambah":
-            nim = aksi[1]
-            ll.hapus(nim)
+            nis = aksi[1]
+            ll.hapus(nis)
             simpan_csv(ll)
-            print(f"\n  [✓] Undo tambah: NIM {nim} berhasil dihapus.")
+            print(f"\n  [✓] Undo tambah: NIS {nis} berhasil dihapus.")
 
         elif tipe == "hapus":
             node = aksi[1]
@@ -239,11 +271,11 @@ while True:
             print(f"\n  [✓] Undo hapus: {node.nama} berhasil dikembalikan.")
 
         elif tipe == "update":
-            nim       = aksi[1]
+            nis       = aksi[1]
             data_lama = aksi[2]
-            ll.update(nim, nama_baru=data_lama["nama"], nilai_baru=data_lama["nilai_mapel"])
+            ll.update(nis, nama_baru=data_lama["nama"], nilai_baru=data_lama["nilai_mapel"])
             simpan_csv(ll)
-            print(f"\n  [✓] Undo update: Data NIM {nim} dikembalikan.")
+            print(f"\n  [✓] Undo update: Data NIS {nis} dikembalikan.")
 
     # ── 7. RANKING ──
     elif pilihan == "7":
@@ -256,5 +288,3 @@ while True:
 
     else:
         print("  [!] Pilihan tidak valid, coba lagi.")
-    
-    # awaawaw=-
