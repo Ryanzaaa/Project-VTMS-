@@ -11,14 +11,14 @@ class LinkedList:
     # ──────────────────────────────────────────
     # CREATE
     # ──────────────────────────────────────────
-    def tambah(self, nim, nama, nilai_mapel):
+    def tambah(self, nis, nama, nilai_mapel):
         # Menambah node baru di akhir linked list.
-        # Menolak jika NIM sudah terdaftar (duplikat).
-        # Return True jika berhasil, False jika NIM sudah ada.
-        if self.cari(nim) is not None:
+        # Menolak jika NIS sudah terdaftar (duplikat).
+        # Return True jika berhasil, False jika NIS sudah ada.
+        if self.cari(nis) is not None:
             return False
 
-        new_node = Student(nim, nama, nilai_mapel)
+        new_node = Student(nis, nama, nilai_mapel)
 
         if self.head is None:
             self.head = new_node
@@ -39,35 +39,34 @@ class LinkedList:
             print("  (Belum ada data siswa)")
             return
 
+        lebar = 62
         print()
-        print("  " + "─" * 75)
-        print(f"  {'No':<4} {'NIM':<12} {'Nama':<20} {'Sains':>7} {'Sosial':>7} {'Kreatif':>8} {'Rekomendasi':<20}")
-        print("  " + "─" * 75)
+        print(f"  +{'-' * lebar}+")
+        print(f"  | {'No':<4} {'NIS':<10} {'Nama':<18} {'Sains':>7} {'Sosial':>7} {'Kreatif':>7} |")
+        print(f"  +{'-' * lebar}+")
 
         current = self.head
         no = 1
         while current:
             skor = current.skor_klaster()
-            rek  = current.LABEL_KLASTER[current.rekomendasi()]
             print(
-                f"  {no:<4} {current.nim:<12} {current.nama:<20} "
+                f"  | {no:<4} {current.nis:<10} {current.nama:<18} "
                 f"{skor['sains']:>7.1f} "
                 f"{skor['sosial']:>7.1f} "
-                f"{skor['kreatif']:>8.1f} "
-                f"{rek:<20}"
+                f"{skor['kreatif']:>7.1f} |"
             )
             current = current.next
             no += 1
 
-        print("  " + "─" * 75)
+        print(f"  +{'-' * lebar}+")
         print(f"  Total: {no - 1} siswa\n")
 
-    def cari(self, nim):
-        # Mencari node berdasarkan NIM.
+    def cari(self, nis):
+        # Mencari node berdasarkan NIS.
         # Return Student node jika ditemukan, None jika tidak.
         current = self.head
         while current:
-            if current.nim == nim:
+            if current.nis == nis:
                 return current
             current = current.next
         return None
@@ -86,16 +85,16 @@ class LinkedList:
     # ──────────────────────────────────────────
     # UPDATE
     # ──────────────────────────────────────────
-    def update(self, nim, nama_baru=None, nilai_baru=None):
-        # Memperbarui data siswa berdasarkan NIM.
+    def update(self, nis, nama_baru=None, nilai_baru=None):
+        # Memperbarui data siswa berdasarkan NIS.
         # Hanya field yang diisi (tidak None) yang akan diubah.
-        # Return True jika berhasil, False jika NIM tidak ditemukan.
-        node = self.cari(nim)
+        # Return True jika berhasil, False jika NIS tidak ditemukan.
+        node = self.cari(nis)
 
         if node is None:
             return False
 
-        if nama_baru:
+        if nama_baru is not None:
             node.nama = nama_baru
 
         if nilai_baru:
@@ -108,15 +107,15 @@ class LinkedList:
     # ──────────────────────────────────────────
     # DELETE
     # ──────────────────────────────────────────
-    def hapus(self, nim):
-        # Menghapus node berdasarkan NIM.
+    def hapus(self, nis):
+        # Menghapus node berdasarkan NIS.
         # Return node yang dihapus (untuk keperluan undo di Stack),
-        # atau None jika NIM tidak ditemukan.
+        # atau None jika NIS tidak ditemukan.
         current = self.head
         prev = None
 
         while current:
-            if current.nim == nim:
+            if current.nis == nis:
                 if prev:
                     prev.next = current.next
                 else:
