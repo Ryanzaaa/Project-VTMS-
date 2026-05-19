@@ -19,10 +19,10 @@ def muat_csv(linked_list):
     with open(FILE_PATH, "r") as file:
         reader = csv.DictReader(file)
         for row in reader:
-            nim  = row["NIM"]
+            nis  = row["NIS"]
             nama = row["Nama"]
             nilai_mapel = {mapel: int(row[mapel]) for mapel in SEMUA_MAPEL}
-            linked_list.tambah(nim, nama, nilai_mapel)
+            linked_list.tambah(nis, nama, nilai_mapel)
 
 
 def simpan_csv(linked_list):
@@ -31,11 +31,11 @@ def simpan_csv(linked_list):
 
     with open(FILE_PATH, "w", newline="") as file:
         writer = csv.writer(file)
-        writer.writerow(["NIM", "Nama"] + SEMUA_MAPEL)
+        writer.writerow(["NIS", "Nama"] + SEMUA_MAPEL)
 
         current = linked_list.head
         while current:
-            row = [current.nim, current.nama]
+            row = [current.nis, current.nama]
             for mapel in SEMUA_MAPEL:
                 row.append(current.nilai_mapel.get(mapel, 0))
             writer.writerow(row)
