@@ -2,7 +2,7 @@
 #  ALGORITHM ENGINE — Sorting & Searching
 #  Modul ini berisi implementasi:
 #    1. Merge Sort  — mengurutkan siswa by skor klaster
-#    2. Binary Search by NIM — mencari siswa secara efisien
+#    2. Binary Search by NIS — mencari siswa secara efisien
 #    3. Ranking per Cluster  — menampilkan peringkat tiap klaster
 # ══════════════════════════════════════════════════════════
 
@@ -66,21 +66,21 @@ def _merge(left, right, key_func, descending):
 
 
 # ──────────────────────────────────────────
-# 2. BINARY SEARCH BY NIM
+# 2. BINARY SEARCH BY NIS
 # ──────────────────────────────────────────
 
-def binary_search_nim(linked_list, target_nim):
+def binary_search_nis(linked_list, target_nis):
     """
-    Mencari siswa by NIM menggunakan Binary Search.
+    Mencari siswa by NIS menggunakan Binary Search.
 
     Cara kerja:
-      1. Ambil semua node dari linked list → ubah ke list
-      2. Sort list berdasarkan NIM (ascending) pakai Merge Sort — O(n log n)
+      1. Ambil semua node dari linked list -> ubah ke list
+      2. Sort list berdasarkan NIS (ascending) pakai Merge Sort — O(n log n)
       3. Lakukan binary search — O(log n)
 
     Args:
         linked_list : LinkedList object
-        target_nim  : NIM yang dicari (str)
+        target_nis  : NIS yang dicari (str)
 
     Return:
         Student node jika ditemukan, None jika tidak.
@@ -90,17 +90,17 @@ def binary_search_nim(linked_list, target_nim):
     if not arr:
         return None
 
-    arr_sorted = merge_sort(arr, key_func=lambda s: s.nim, descending=False)
+    arr_sorted = merge_sort(arr, key_func=lambda s: s.nis, descending=False)
 
     lo, hi = 0, len(arr_sorted) - 1
 
     while lo <= hi:
         mid     = (lo + hi) // 2
-        mid_nim = arr_sorted[mid].nim
+        mid_nis = arr_sorted[mid].nis
 
-        if mid_nim == target_nim:
+        if mid_nis == target_nis:
             return arr_sorted[mid]
-        elif mid_nim < target_nim:
+        elif mid_nis < target_nis:
             lo = mid + 1
         else:
             hi = mid - 1
@@ -113,10 +113,12 @@ def binary_search_nim(linked_list, target_nim):
 # ──────────────────────────────────────────
 
 CLUSTERS = {
-    "sains"   : "Sains & Teknologi",
-    "sosial"  : "Sosial & Bisnis",
-    "kreatif" : "Kreatif & Bahasa",
+    "sains"  : "Sains & Teknologi",
+    "sosial" : "Sosial & Bisnis",
+    "kreatif": "Kreatif & Bahasa",
 }
+
+MEDAL = {1: "[1]", 2: "[2]", 3: "[3]"}
 
 
 def tampilkan_ranking(linked_list, cluster="sains"):
@@ -137,28 +139,20 @@ def tampilkan_ranking(linked_list, cluster="sains"):
     sorted_arr = merge_sort(arr, key_func, descending=True)
     label      = CLUSTERS.get(cluster, cluster)
 
+    lebar = 52
     print()
-    print(f"  ╔{'═' * 68}╗")
-    print(f"  ║  🏆  RANKING KLASTER: {label:<46}║")
-    print(f"  ╠{'═' * 68}╣")
-    print(f"  ║  {'Rank':<5} {'NIM':<12} {'Nama':<20} {'Skor':>7} {'Rekomendasi':<20}  ║")
-    print(f"  ╠{'═' * 68}╣")
+    print(f"  +{'-' * lebar}+")
+    print(f"  | RANKING KLASTER : {label:<32}|")
+    print(f"  +{'-' * lebar}+")
+    print(f"  | {'Rank':<6} {'NIS':<12} {'Nama':<20} {'Skor':>8} |")
+    print(f"  +{'-' * lebar}+")
 
     for rank, student in enumerate(sorted_arr, start=1):
         skor  = student.skor_klaster()[cluster]
-        rek   = student.LABEL_KLASTER[student.rekomendasi()]
-        medal = ""
-        if   rank == 1: medal = "🥇"
-        elif rank == 2: medal = "🥈"
-        elif rank == 3: medal = "🥉"
-        else:           medal = f"  {rank}."
+        medal = MEDAL.get(rank, f"[{rank}]")
+        print(f"  | {medal:<6} {student.nis:<12} {student.nama:<20} {skor:>8.1f} |")
 
-        print(
-            f"  ║  {medal:<5} {student.nim:<12} {student.nama:<20} "
-            f"{skor:>7.1f} {rek:<20}  ║"
-        )
-
-    print(f"  ╚{'═' * 68}╝")
+    print(f"  +{'-' * lebar}+")
     print(f"  Total: {len(sorted_arr)} siswa\n")
 
 
