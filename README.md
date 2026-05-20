@@ -226,9 +226,9 @@ Bubble Sort memiliki kompleksitas O(n²) — pada 1000 siswa, ini berarti ~1.000
 
 | Nama | NIM | Kontribusi Utama |
 |---|---|---|
-| Ryanza Faraz Mulia | J0403251064 | Linked List, Algorithm Engine, File Handler, UI |
-| Valentino Agripina Pranaja De Ropa | J0403251154 | Linked List, Algorithm Engine, File Handler, UI |
-| Rifqi Tazakka Putra | J0403251158 | Linked List, Algorithm Engine, File Handler, UI |
+| Ryanza Faraz Mulia | J0403251064 | Stack, CSV File, Validasi Imput, Menu CLI |
+| Valentino Agripina Pranaja De Ropa | J0403251154 | Algorithm Engine: Merge Sort, Searching by NIS, Ranking per Cluster|
+| Rifqi Tazakka Putra | J0403251158 | Linked List, Class Student, Fungsi CRUD |
 
 
 ---
