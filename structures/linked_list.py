@@ -94,7 +94,7 @@ class LinkedList:
         if node is None:
             return False
 
-        if nama_baru is not None:
+        if nama_baru:
             node.nama = nama_baru
 
         if nilai_baru:
