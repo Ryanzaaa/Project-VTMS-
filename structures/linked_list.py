@@ -148,6 +148,19 @@ class LinkedList:
         for node in list_node:
             node.next = None
             self.tambah_node(node)
+    
+    def sort_by_nis(self):
+        # Mengurutkan Linked List berdasarkan NIS secara ascending
+        arr = self.ke_list()
+
+        if len(arr) <= 1:
+            return
+
+        # Import di dalam fungsi supaya tidak rawan circular import
+        from structures.algorithm_engine import merge_sort
+
+        sorted_arr = merge_sort(arr, key_func=lambda s: s.nis, descending=False)
+        self.dari_list(sorted_arr)
 
     def tambah_node(self, node):
         # Menambah node Student yang sudah ada langsung ke linked list.

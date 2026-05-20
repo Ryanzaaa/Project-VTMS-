@@ -118,6 +118,7 @@ while True:
         if not berhasil:
             print(f"  [!] NIS {nis} sudah terdaftar!")
         else:
+            ll.sort_by_nis()
             stack.push(("tambah", nis))
             simpan_csv(ll)
             print(f"  [✓] Siswa {nama} berhasil ditambahkan!")
@@ -215,6 +216,7 @@ while True:
             nilai_baru=nilai_baru if nilai_baru else None
         )
 
+        ll.sort_by_nis()
         stack.push(("update", nis, data_lama))
         simpan_csv(ll)
         print(f"  [✓] Data siswa {nis} berhasil diupdate!")
@@ -244,6 +246,7 @@ while True:
             continue
 
         deleted = ll.hapus(nis)
+        ll.sort_by_nis()
         stack.push(("hapus", deleted))
         simpan_csv(ll)
         print(f"  [✓] Siswa {deleted.nama} berhasil dihapus!")
@@ -261,12 +264,14 @@ while True:
         if tipe == "tambah":
             nis = aksi[1]
             ll.hapus(nis)
+            ll.sort_by_nis()
             simpan_csv(ll)
             print(f"\n  [✓] Undo tambah: NIS {nis} berhasil dihapus.")
 
         elif tipe == "hapus":
             node = aksi[1]
             ll.tambah_node(node)
+            ll.sort_by_nis()
             simpan_csv(ll)
             print(f"\n  [✓] Undo hapus: {node.nama} berhasil dikembalikan.")
 
@@ -274,6 +279,7 @@ while True:
             nis       = aksi[1]
             data_lama = aksi[2]
             ll.update(nis, nama_baru=data_lama["nama"], nilai_baru=data_lama["nilai_mapel"])
+            ll.sort_by_nis()
             simpan_csv(ll)
             print(f"\n  [✓] Undo update: Data NIS {nis} dikembalikan.")
 

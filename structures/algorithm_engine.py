@@ -72,30 +72,18 @@ def _merge(left, right, key_func, descending):
 def binary_search_nis(linked_list, target_nis):
     """
     Mencari siswa by NIS menggunakan Binary Search.
-
-    Cara kerja:
-      1. Ambil semua node dari linked list -> ubah ke list
-      2. Sort list berdasarkan NIS (ascending) pakai Merge Sort — O(n log n)
-      3. Lakukan binary search — O(log n)
-
-    Args:
-        linked_list : LinkedList object
-        target_nis  : NIS yang dicari (str)
-
     Return:
         Student node jika ditemukan, None jika tidak.
     """
-    arr = linked_list.ke_list()
+    arr_sorted = linked_list.ke_list()
 
-    if not arr:
+    if not arr_sorted:
         return None
-
-    arr_sorted = merge_sort(arr, key_func=lambda s: s.nis, descending=False)
 
     lo, hi = 0, len(arr_sorted) - 1
 
     while lo <= hi:
-        mid     = (lo + hi) // 2
+        mid = (lo + hi) // 2
         mid_nis = arr_sorted[mid].nis
 
         if mid_nis == target_nis:
@@ -143,7 +131,7 @@ def tampilkan_ranking(linked_list, cluster="sains"):
     print()
     print(f"  +{'-' * lebar}+")
     print(f"  | RANKING KLASTER : {label:<32}|")
-    print(f"  +{'-' * lebar}+")
+    print(f"  +{'-' * lebar}+") 
     print(f"  | {'Rank':<6} {'NIS':<12} {'Nama':<20} {'Skor':>8} |")
     print(f"  +{'-' * lebar}+")
 
