@@ -79,9 +79,9 @@ def tampil_detail(node):
     print()
 
 def menu():
-    print("\n" + "=" * 40)
-    print("   VTMS - Vocational Talent Mapping")
-    print("=" * 40)
+    print("\n" + "=" * 45)
+    print("   VTMS - Vocational Talent Mapping System")
+    print("=" * 45)
     print("  1. Tambah Siswa")
     print("  2. Lihat Semua Siswa")
     print("  3. Cari Siswa")
@@ -90,7 +90,7 @@ def menu():
     print("  6. Undo Aksi Terakhir")
     print("  7. Ranking per Klaster")
     print("  8. Keluar")
-    print("=" * 40)
+    print("=" * 45)
 
 
 # ──────────────────────────────────────────
