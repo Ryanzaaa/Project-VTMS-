@@ -234,3 +234,5 @@ Bubble Sort memiliki kompleksitas O(n²) — pada 1000 siswa, ini berarti ~1.000
 ---
 
 > Proyek ini dibuat untuk memenuhi tugas Project-Based Learning mata kuliah Algoritma & Struktur Data (TPL2106).
+
+> Berikut link video presentasi projek kami : https://youtu.be/bM9pysVTCRM
