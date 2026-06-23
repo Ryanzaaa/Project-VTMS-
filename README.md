@@ -1,10 +1,10 @@
-# 🎓 VTMS — Vocational Talent Mapping System
+# VTMS — Vocational Talent Mapping System
 
 > Sistem berbasis CLI untuk memetakan bakat dan merekomendasikan jurusan vokasi bagi siswa berdasarkan nilai mata pelajaran, dibangun menggunakan struktur data Linked List, Stack, Merge Sort, dan Binary Search.
 
 ---
 
-## 📋 Daftar Isi
+## Daftar Isi
 
 - [Deskripsi Proyek](#deskripsi-proyek)
 - [Fitur Utama](#fitur-utama)
@@ -24,9 +24,9 @@ VTMS adalah aplikasi command-line yang membantu guru BK (Bimbingan Konseling) at
 
 | Klaster | Mata Pelajaran yang Dinilai |
 |---|---|
-| 🔬 Sains & Teknologi | Matematika, Fisika, Kimia, Informatika |
-| 💼 Sosial & Bisnis | Ekonomi, Sosiologi, Geografi, Sejarah |
-| 🎨 Kreatif & Bahasa | B. Indonesia, B. Inggris, Seni Budaya, Prakarya |
+|  Sains & Teknologi | Matematika, Fisika, Kimia, Informatika |
+|  Sosial & Bisnis | Ekonomi, Sosiologi, Geografi, Sejarah |
+|  Kreatif & Bahasa | B. Indonesia, B. Inggris, Seni Budaya, Prakarya |
 
 Sistem menghitung **rata-rata skor per klaster** dari 12 mata pelajaran, lalu merekomendasikan jurusan yang paling sesuai dengan profil nilai masing-masing siswa. Data disimpan secara persisten dalam file CSV.
 
@@ -199,7 +199,7 @@ Project-VTMS-/
 │   └── file_handler.py         # Persistensi data: baca/tulis CSV
 │
 ├── data/
-│   └── students.csv            # File penyimpanan data siswa (auto-generated)
+│   └── students.csv            # File penyimpanan data siswa
 │
 └── README.md
 ```
